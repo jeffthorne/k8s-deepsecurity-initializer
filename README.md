@@ -21,7 +21,10 @@ kubectl get nodes
 2. Update deployment/ds-initializer-deployment with the name of your docker image
 3. Deploy manifests in deployments directory. Do not deploy ds-initializer.yaml until  
    ds-initializer-deployment.yaml is up and working. This sets up the admission registration.  
-4. review deploment/sample-pod-deployment.yaml. The controller looks for deployments with the name  
+4. review deploment/sample-pod-deployment.yaml. The controller intercepts all deployments with the name  
    jeffsbooks and with a label of deepsecurity-policy.
+   
+   
+## Demo Video
 
-
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1abdcVlTJFU/0.jpg)](https://www.youtube.com/watch?v=1abdcVlTJFU)
