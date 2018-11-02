@@ -1,0 +1,17 @@
+# InitializerConfiguration for the require_owner initializer.
+# makes sure to enable initalizers alpha feature https://kubernetes.io/docs/admin/extensible-admission-controllers/#enable-initializers-alpha-feature
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: InitializerConfiguration
+metadata:
+  name: ds-agent-required-on-node
+initializers:
+  # Doc copied from Kubernetes sample:
+  # 'the name needs to be fully qualified, i.e., containing at least two "."'
+  - name: ds.required.example
+    rules:
+      - apiGroups:
+          - "*"
+        apiVersions:
+          - "*"
+        resources:
+          - deployments

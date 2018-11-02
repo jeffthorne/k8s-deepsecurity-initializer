@@ -1,0 +1,28 @@
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: initializer
+  namespace: jeffsbooks
+  labels:
+    app: initializer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: initializer
+  template:
+    metadata:
+      labels:
+        app: initializer
+    spec:
+      serviceAccountName: ds-initializer
+      containers:
+        - image: us.gcr.io/test/ds-intializer:latest
+          name: initializer
+          imagePullPolicy: Always
+          tty: true
+          ports:
+            - containerPort: 80
+              name: app
+
+

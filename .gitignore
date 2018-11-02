@@ -1,0 +1,9 @@
+.idea/
+.Python
+__pycache__/
+bin/
+include/
+lib/
+share/
+*DS_Store
+venv/

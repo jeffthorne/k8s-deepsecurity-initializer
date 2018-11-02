@@ -1,0 +1,26 @@
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: jeffsbooks
+  namespace: jeffsbooks
+  labels:
+    app: jeffsbooks
+    deepsecurity-policy: PCI
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jeffsbooks
+  template:
+    metadata:
+      labels:
+        app: jeffsbooks
+    spec:
+      containers:
+        - image: us.gcr.io/test/jeffsbooks:latest
+          name: jeffsbooks
+          imagePullPolicy: Always
+          tty: true
+          ports:
+            - containerPort: 80
+              name: flask
