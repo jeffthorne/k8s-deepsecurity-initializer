@@ -19,4 +19,4 @@ COPY app /app
 WORKDIR /app
 EXPOSE 80
 ENTRYPOINT ["python"]
-CMD ["ds_required.py"]
+CMD ["ds_initializer.py"]

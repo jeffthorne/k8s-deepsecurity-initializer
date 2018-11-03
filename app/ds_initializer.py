@@ -11,17 +11,16 @@ assign that DS policy to the single cluster node in this example.
 Note: The computer name or display name in Deep Security must match the node name returned by kubectl get nodes
 
 """
-import sys
-sys.path.append('../')
+
 import kubernetes
 
 from ai2.kubernetes.initializer import (InitializerController, ResourceHandler, SimpleResourceController, Rejection)
 from dsp3.models.manager import Manager
 
-from controller.utils.utils import assign_cluster_policy
-from controller.main_loop.main_loop import main_loop
+from controller.utils import assign_cluster_policy
+from controller.main_loop import main_loop
 from controller import logger
-from controller.utils.utils import get_ds_password
+from controller.utils import get_ds_password
 
 running_in_cluster = True
 
@@ -33,7 +32,7 @@ else:
 
 v1 = kubernetes.client.CoreV1Api()
 password = get_ds_password(v1)   #password store as k8s secret. See deployment/secret.yaml
-dsm = Manager(username="jeff_thorne@trendmicro.com", password=password, tenant='ACME Corp')
+dsm = Manager(username="username", password=password, tenant='tenant')
 
 
 def main():

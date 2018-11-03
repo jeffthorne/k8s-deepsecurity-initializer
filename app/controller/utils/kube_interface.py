@@ -1,18 +1,15 @@
-import sys
-sys.path.append('../')
-
 from datetime import datetime
 import pytz
 import kubernetes
 from kubernetes import client
 
-from ..models.models import KubeNode
+from ..models import KubeNode
 
 
 class KubeInterface():
 
     def __init__(self):
-        from ds_required import running_in_cluster
+        from ds_initializer import running_in_cluster
         if running_in_cluster:
             kubernetes.config.load_incluster_config()  # or load config in cluster
         else:
