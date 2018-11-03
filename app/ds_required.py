@@ -11,10 +11,11 @@ assign that DS policy to the single cluster node in this example.
 Note: The computer name or display name in Deep Security must match the node name returned by kubectl get nodes
 
 """
-
+import sys
+sys.path.append('../')
 import kubernetes
 
-from ai2.kubernetes.initializer import (InitializerController, ResourceHandler, SimpleResourceController)
+from ai2.kubernetes.initializer import (InitializerController, ResourceHandler, SimpleResourceController, Rejection)
 from dsp3.models.manager import Manager
 
 from controller.utils.utils import assign_cluster_policy
@@ -22,9 +23,12 @@ from controller.main_loop.main_loop import main_loop
 from controller import logger
 from controller.utils.utils import get_ds_password
 
+running_in_cluster = True
 
-#kubernetes.config.load_kube_config()        # Load the Kubernetes configuration from your local kubeconfig file.
-kubernetes.config.load_incluster_config()    # or load config in cluster
+if running_in_cluster:
+    kubernetes.config.load_incluster_config()  # or load config in cluster
+else:
+    kubernetes.config.load_kube_config() # Load the Kubernetes configuration from your local kubeconfig file.
 
 
 v1 = kubernetes.client.CoreV1Api()
@@ -47,12 +51,14 @@ def main():
         Args:
             item: A Kubernetes object with standard metadata attached.
         """
-        ds_policy_to_assign = None
 
-        if item.metadata.name == "jeffsbooks" and 'deepsecurity-policy' in item.metadata.labels:
-            logger.info(item.metadata)
-            policy_name = item.metadata.labels['deepsecurity-policy']
-            assign_cluster_policy(dsm, policy_name)
+        if item.metadata.name == "jeffsbooks":
+            if 'deepsecurity-policy' in item.metadata.labels:
+                logger.info(item.metadata)
+                policy_name = item.metadata.labels['deepsecurity-policy']
+                assign_cluster_policy(dsm, policy_name, item)
+            else:
+                raise Rejection("Label 'deepsecurity-policy' missing from {}:{}".format(item.metadata.namespace, item.metadata.name), 'MissingPolicy')
 
         return item   #We aren't changing any data, so simply return the item.
 

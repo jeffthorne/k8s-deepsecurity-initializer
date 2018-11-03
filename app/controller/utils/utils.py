@@ -1,11 +1,16 @@
 import json
 import base64
 from .kube_interface import KubeInterface
+from ai2.kubernetes.initializer import Rejection
 
 
-def assign_cluster_policy(dsm, policy_name):
+def assign_cluster_policy(dsm, policy_name, item):
     ids = dshosts_that_map_to_kubenodes(dsm)
     profile = dsm.get_security_profile_by_name(policy_name)
+
+    if len(ids) < 1:
+        raise Rejection(
+            "Could not find a k8s node in Deep Security {}:{}".format(item.metadata.namespace, item.metadata.name), 'MissingNode')
 
     for id in ids:
         dsm.security_profile_assign_to_host(profile['ID'], id)

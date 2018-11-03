@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+
 from datetime import datetime
 import pytz
 import kubernetes
@@ -9,7 +12,11 @@ from ..models.models import KubeNode
 class KubeInterface():
 
     def __init__(self):
-        kubernetes.config.load_incluster_config()
+        from ds_required import running_in_cluster
+        if running_in_cluster:
+            kubernetes.config.load_incluster_config()  # or load config in cluster
+        else:
+            kubernetes.config.load_kube_config()  # Load the Kubernetes configuration from your local kubeconfig file.
         v1 = client.CoreV1Api()
         self.api = v1
 

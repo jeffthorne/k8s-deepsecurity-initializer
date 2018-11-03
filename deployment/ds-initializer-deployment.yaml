@@ -17,7 +17,7 @@ spec:
     spec:
       serviceAccountName: ds-initializer
       containers:
-        - image: us.gcr.io/test/ds-intializer:latest
+        - image: us.gcr.io/test-bbfc6/ds-intializer:latest
           name: initializer
           imagePullPolicy: Always
           tty: true
